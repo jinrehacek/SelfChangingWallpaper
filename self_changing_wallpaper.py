@@ -1,14 +1,17 @@
 import ctypes
 import os
 import requests
-import json
 import datetime
 
 #Selection of subreddit that we want to use
 SUBREDDIT = "wallpaper"
 
+#Path where to save the images
+PATH = os.path.normpath(
+    "C:\wallpapers")
+
 #Template for name of the file
-NAME_TEMPLATE = f"{'%d'}-{'%m'}-{'%Y'}"
+NAME_TEMPLATE = f"{'%Y'}-{'%m'}-{'%d'}"
 
 #Setup for workin with datetime module
 time = datetime.datetime.now()
@@ -29,27 +32,27 @@ if ".png" in img_url:
     extension = ".png"
 elif ".jpg" in img_url or "¨.jpeg" in img_url:
     extension = ".jpg"
+else:
+	 raise Exception
 
 
-filename = time.strftime(NAME_TEMPLATE) + extension
 
 if response.status_code == 200:
 	try:
 		#Saving the image file
+		filename = PATH + "\\" + time.strftime(NAME_TEMPLATE) + extension
 		file = open(filename, mode="bx")
 		file.write(image.content)
 	except:
 		#Runs if there's already file with name of same date
 		#Setting different filename by adding hour time information
-		filename = time.strftime(NAME_TEMPLATE) + time.strftime(f"({'%H'})") + extension
+		filename = PATH + "\\" + time.strftime(NAME_TEMPLATE) + time.strftime(f"({'%H'})") + extension
 		#Saving the image file
 		file = open(filename, mode="xb")
 		file.write(image.content)
+else:
+	raise Exception
 
-
-#Path to the image
-img_path = os.path.normpath(
-    "C:/Users/ASUS/SelfChangingWallpaper/" + filename)
 
 #Setting image as wallpaper
-ctypes.windll.user32.SystemParametersInfoW(20, 0, img_path, 0)
+ctypes.windll.user32.SystemParametersInfoW(20, 0, filename, 0)

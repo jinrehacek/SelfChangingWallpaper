@@ -5,6 +5,10 @@ from os import environ
 from os.path import normpath
 from dotenv import load_dotenv
 
+def save_img(f_name):
+    file = open(f_name, mode="wb")
+    file.write(image.content)
+
 # Loading .env file which can store variables outside of the script
 load_dotenv()
 
@@ -25,7 +29,7 @@ NAME_TEMPLATE_WITH_HOURS = NAME_TEMPLATE + f"({'%H'})"
 time = datetime.datetime.now()
 
 # Url for Reddit API request
-url = f"https://www.reddit.com/r/{SUBREDDIT}/top/.json?&t=day&limit=1"
+url = f"https://www.reddit.com/r/{SUBREDDIT}/top/.json?&t=day&limit=5"
 
 # Request to reddit API with special header to acess it
 response = requests.get(
@@ -42,7 +46,7 @@ elif ".jpg" in img_url or "¨.jpeg" in img_url:
     extension = ".jpg"
 else:
     print("Image is not .png or .jpeg:\n", img_url)
-    raise Exception
+    raise Exception FuckedUpEncoding
 
 
 assert (response.status_code ==
@@ -52,17 +56,17 @@ try:
     # Saving the image file
     filename = normpath(
         PATH + "/" + time.strftime(NAME_TEMPLATE) + extension)
-    file = open(filename, mode="bx")
-    file.write(image.content)
+    save_img(filename)
+    # file = open(filename, mode="bx")
+    # file.write(image.content)
 except FileExistsError:
     # Runs if there's already file with name of same date
     # Setting different filename by adding hour time information
-    # filename = os.ath.normpath(PATH + "/" + time.strftime(NAME_TEMPLATE) + time.strftime(f"({'%H'})") + extension)
     filename = normpath(
         PATH + "/" + time.strftime(NAME_TEMPLATE_WITH_HOURS) + extension)
     # Saving the image file
-    file = open(filename, mode="xb")
-    file.write(image.content)
+    save_img(filename)
+
 
 
 # Setting image as wallpaper

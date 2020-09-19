@@ -46,7 +46,7 @@ elif ".jpg" in img_url or "¨.jpeg" in img_url:
     extension = ".jpg"
 else:
     print("Image is not .png or .jpeg:\n", img_url)
-    raise Exception FuckedUpEncoding
+    raise Exception("FuckedUpEncoding")
 
 
 assert (response.status_code ==

@@ -70,4 +70,4 @@ except FileExistsError:
 
 
 # Setting image as wallpaper
-ctypes.windll.user32.SystemParametersInfoW(20, 0, filename, 0)
+ctypes.windll.user32.SystemParametersInfoW(20, 0, filename, 3)
